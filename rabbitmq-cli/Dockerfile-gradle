@@ -1,0 +1,10 @@
+FROM gradle:4.3
+
+RUN apt-get update
+
+RUN git clone https://github.com/Praqma/tracey-protocol-eiffel-cli-generator.git
+
+RUN cd tracey-protocol-eiffel-cli-generator \
+    && gradle build \
+    && cp build/libs/*.jar ../ \
+    && java -jar ../tracey-protocol-eiffel-cli-generator.jar EiffelSourceChangeCreatedEvent -c HEAD~1

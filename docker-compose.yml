@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+  jenkins:
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "3"
+        max-size: "10m"
+    image: praqma/jcasc:sha-6e3c7a2
+    ports:
+      - 50000:50000
+      - 8080:8080
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - $PWD/jcasc_conf:/var/jenkins_conf
+    environment:
+      - CASC_JENKINS_CONFIG=/var/jenkins_conf
+      - JENKINS_HOST=$HOSTNAME
+#  rabbitmq-cli:
+#    build:
+#      context: ./rabbitmq-cli
+#      dockerfile: Dockerfile-gradle
+
+  rabbitmq:
+    image: rabbitmq:3
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+#  database:
+#    image: "postgres" # use latest official postgres version
+#    env_file:
+#      - database.env # configure postgres
+#    volumes:
+#      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts downvolumes:
+#  database-data: # named volumes can be managed easier using docker-compose
+
+volumes:
+  jenkins_home:
